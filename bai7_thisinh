@@ -1,0 +1,134 @@
+#include<iostream>
+#include<string.h>
+using namespace std;
+class Nguoi{
+	protected:
+		char Hoten[25];
+		int Nam_sinh;
+	public:
+		void Nhap()
+		{
+			cout<<"Nhap ho ten: ";
+			fflush(stdin);
+			cin.getline(Hoten,25);
+			cout<<"Nhap nam sinh: ";
+			cin>>Nam_sinh;
+		}
+		void Xuat()
+		{
+			cout<<"Ho ten: "<<Hoten<<endl
+				<<"Nam sinh: "<<Nam_sinh<<endl;
+		}
+};
+class Thi_sinh : public Nguoi{
+	int Sbd;
+	float Diem_toan, Diem_ly, Diem_hoa;
+	public:
+		void Nhap()
+		{
+			this->Nguoi::Nhap();
+			cout<<"Nhap so bao danh:";
+			cin>>Sbd;
+			cout<<"Nhap diem toan:";
+			cin>>Diem_toan;
+			cout<<"Nhap diem ly:";
+			cin>>Diem_ly;
+			cout<<"Nhap diem hoa:";
+			cin>>Diem_hoa;
+		}
+		void Xuat()
+		{
+			this->Nguoi::Xuat();
+			cout<<"So bao danh: "<<Sbd<<endl
+				<<"Diem toan:"<<Diem_toan<<endl
+				<<"Diem ly: "<<Diem_ly<<endl
+				<<"Diem hoa: "<<Diem_hoa<<endl;
+		}
+		float tongDiem()
+		{
+			return this->Diem_toan+ this->Diem_ly+ this->Diem_hoa;
+		}
+		void set_Sbd(int sbd)
+		{
+			this->Sbd= sbd;
+		}
+		float get_toan(){
+			return this->Diem_toan;
+		}
+		float get_ly(){
+			return this->Diem_ly;
+		}
+	    float get_hoa(){
+	     	return this->Diem_hoa;
+		 }
+};
+void import_list(Thi_sinh a[], int &n)
+{
+	cout<<"\n\nNHAP DANH SACH THI SINH: "<<endl;
+	for(int i=0; i<n; i++){
+		cout<<"[+] Nhap thi sinh thu: "<<i+1<<endl;
+		a[i].Nhap();
+	}
+}
+void display_list(Thi_sinh a[], int n)
+{
+	cout<<"\n\nXUAT DANH SACH THI SINH: "<<endl;
+	for(int i=0; i<n; i++){
+		cout<<"[++] Xuat thi sinh thu: "<<i+1<<endl;
+		a[i].Xuat();
+	}
+}
+void Sort(Thi_sinh a[], int &n)
+{
+	cout<<"\n---SAP XEP THEO THU TU TANG DAN CUA TONG DIEM LA :---"<<endl;
+	for(int i=0; i<n; i++){
+		for(int j=i+1; j<n; j++){
+			if(a[i].tongDiem() > a[j].tongDiem()){
+				swap( a[i], a[j]);
+			}
+		}
+	}
+}
+void Tim_kiem(Thi_sinh a[], int &n)
+{
+	int sbd;
+	cout<<"Nhap so bao danh can tim kiem:";
+	cin>>sbd;
+	cout<<"\n\t\tTHI SINH CAN TIM LA: "<<endl;
+	for(int i=0; i<n; i++){
+		a[i].set_Sbd(sbd);
+		a[i].Xuat();
+	}
+}
+float diemcao(Thi_sinh a[], int &n)
+{
+	int dem=0;
+	for(int i=0; i<n; i++){
+		if(a[i].get_toan()>=5 && a[i].get_ly()>=5 && a[i].get_hoa()>=5)
+		dem++;
+			
+		}
+		return dem;
+	}
+float tilediemcao(Thi_sinh a[], int &n)
+{
+	float tiLe;
+	for(int i=0; i<n; i++){
+		tiLe=((n-diemcao(a,n))*100)/n;
+		return tiLe;		
+}
+}
+int main()
+{
+	int n;
+	cout<<"\nNhap so luong thi sinh:";
+	cin>>n;
+	Thi_sinh a[n];
+	import_list(a,n);
+	display_list(a,n);
+	Sort(a,n);
+	display_list(a,n);
+	Tim_kiem(a,n);
+	cout<<"\nti le thi sinh dat yeu cau la:"<<tilediemcao(a,n)<<"%";
+	return 0;
+}
